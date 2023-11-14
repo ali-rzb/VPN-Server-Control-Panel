@@ -1,0 +1,164 @@
+﻿@using System.Globalization;
+@using Tools;
+@using Models.ViewModel;
+
+@model FailedLoginsVm
+@{
+    ViewBag.Title = "Connections Stats";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 style="display:inline-block;">Connections Stats</h3>
+<h6 style="display:inline-block;">
+    &ensp;
+    loading time : @(TempData["LoadingTime"]?.ToString())
+</h6>
+
+<div class="text-success">@(TempData["SuccessMessage"]?.ToString())</div>
+<div class="text-warning">@(TempData["ErrorMessage"]?.ToString())</div>
+@if (Model != null)
+{
+    PersianCalendar pc = new PersianCalendar();
+    var x = "";
+    var y = "";
+
+    int len = Model.stats.Count();
+
+    int visit = Model.stats[len-1];
+    int min = visit, max = visit;
+    var interval = len;
+    int temp = 0;
+    int start_point = len;
+    while (temp != 3 && start_point > 0)
+    {
+        start_point--;
+        if (Model.dates[start_point].ToString("hh tt") == "12 AM")
+        {
+            temp++;
+        }
+    }
+    for (int i = start_point; i < len; i++)
+    {
+        var time = int.Parse(Model.dates[i].ToString("HH"));
+        if (time == 0)
+        {
+            x += "(" + pc.GetDayOfMonth(Model.dates[i]) + " " + PersianDate.MonthIndexToName(pc.GetMonth(Model.dates[i]), finglish: true) + ")";
+        }
+        else
+        {
+            x += time;
+        }
+
+        visit = Model.stats[i];
+        max = visit > max ? visit : max;
+
+        y += visit.ToString();
+        if (i != len - 1)
+        {
+            x += ",";
+            y += ",";
+        }
+    }
+    max = (int)(max * 1.1);
+    min = (int)(min * 1.0 - 0.1 * max);
+
+
+    <div id="SiteVisitX" class="hidden">
+        @x
+    </div>
+    <div id="SiteVisitY" class="hidden">
+        @y
+    </div>
+    <div id="minVisits" class="hidden">
+        @min
+    </div>
+    <div id="maxVisits" class="hidden">
+        @max
+    </div>
+    <br />
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-chart-area"></i>
+        </div>
+        
+        <canvas id="myAreaChart"></canvas>
+        
+        <div class="card-footer small text-muted"></div>
+    </div>
+}
+
+@section EndSectionForScripts{
+    <script>
+        // Set new default font family and font color to mimic Bootstrap's default styling
+        Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#292b2c';
+
+        var days = document.getElementById("SiteVisitX").innerHTML.split(",");
+        var visits = document.getElementById("SiteVisitY").innerHTML.split(",");
+
+
+        var minVisit = parseInt(document.getElementById("minVisits").innerHTML);
+        var maxVisit = parseInt(document.getElementById("maxVisits").innerHTML);
+
+
+        // Area Chart Example
+        var ctx = document.getElementById("myAreaChart");
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: days,
+                datasets: [{
+                    label: "Connections",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(2,117,216,0.2)",
+                    borderColor: "rgba(2,117,216,1)",
+                    pointRadius: 2,
+                    pointBackgroundColor: "rgba(2,117,216,1)",
+                    pointBorderColor: "rgba(255,255,255,0.8)",
+                    pointHoverRadius: 4,
+                    pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                    pointHitRadius: 50,
+                    pointBorderWidth: 1,
+                    data: visits,
+                    spanGaps: true
+                }],
+            },
+            options: {
+                responsive: true,
+                bounds: 'ticks',
+                scales: {
+
+                    xAxes: [{
+                        time: {
+                            unit: 'date'
+                        },
+                        stacked: true,
+                        time: {
+                            unit: 'string'
+                        },
+                        gridLines: {
+                            display: true
+                        },
+                        ticks: {
+                            maxTicksLimit: 7
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            max: maxVisit,
+                            maxTicksLimit: 5
+                        },
+                        gridLines: {
+                            color: "rgba(0, 0, 0, .125)",
+                        }
+                    }],
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+    </script>
+}

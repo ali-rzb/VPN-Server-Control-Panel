@@ -1,0 +1,55 @@
+﻿@using Models.Users
+@using Tools
+@model User
+
+<tr class="row_with_bg table-labels-row">
+    <th>User Name</th>
+    <th>Status</th>
+    <th>Download</th>
+    <th>Upload</th>
+    <th>Total Duration</th>
+</tr>
+<tr class="row_with_bg">
+    <th>@Html.DisplayFor(model => model.UserName)</th>
+    <th>
+        @if (Model.ActiveConnections != null && Model.ActiveConnections.Count != 0)
+        {<div class="connected"></div> }
+        else
+        { <div class="disconnected"></div>}
+    </th>
+    <th>@Model.TotalDownload.ToString()</th>
+    <th>@Model.TotalUpload.ToString()</th>
+    <th>@Model.TotalConnectionTime.ToFriendlyString()</th>
+</tr>
+<tr class="row_with_bg table-labels-row">
+    <th>
+        @Html.ActionLink("Remove", "RemoveUserRedirect", "User", new { username = Model.UserName }, new { @class = "RemoveBtnRedirect ActionLink", msg = "Are you sure about removing this user?" })
+        /
+        @if (!Model.Enabled)
+        {
+            @Html.ActionLink("Enable", "EnableUser", "User", new { username = Model.UserName }, new { @class = "AskConfirm ActionLink", msg = "Are you sure about unlocking this account?" })
+        }
+        else
+        {
+            @Html.ActionLink("Disable", "DisableUser", "User", new { username = Model.UserName }, new { @class = "AskConfirm ActionLink", msg = "Are you sure about locking this account?" })
+        }
+    </th>
+    <th>Conn Count</th>
+    <th>Avg Download</th>
+    <th>Avg Upload</th>
+    <th>Avg Duration</th>
+</tr>
+<tr class="row_with_bg">
+    <th style="font-size: 0.85em !important;">
+        @Html.ActionLink("Edit", "EditUser", "User", new { username = Model.UserName }, new { @class = "ActionLink" })
+        @if(!string.IsNullOrEmpty(@Model.ReservedIpAddress))
+        {
+            <span>/</span>
+        }
+        @Model.ReservedIpAddress
+    </th>
+    <th>@Model.ConnectionsCount</th>
+    <th>@Model.AverageDownloadEachTime.ToString()</th>
+    <th>@Model.AverageUploadEachTime.ToString()</th>
+    <th>@Model.AverageConnectionTime.ToFriendlyString()</th>
+</tr>

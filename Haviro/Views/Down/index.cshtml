@@ -1,0 +1,46 @@
+﻿
+@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Haviro Corp</title>
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <script src="~/Content/jquery.min.js"></script>
+</head>
+<body>
+    <br />
+    <br />
+
+    <div class="hello-world">
+        <h1>H</h1>
+        <h1>A</h1>
+        <h1>V</h1>
+        <h1>I</h1>
+        <h1>R</h1>
+        <h1>O</h1>
+    </div>
+    <div style="clear:both;"></div>
+
+    <div id="connected" style="display: none;">
+        <h3>Connected</h3>
+    </div>
+    <div style="clear:both;"></div>
+    <script>
+        $.getJSON('http://ip-api.com/json', function(data) {
+            var ip = JSON.stringify(data, ["query"]);
+            if(ip.includes("\"query\":")){
+                ip = ip.split("\"")[3]
+                if(ip == "51.210.58.88"){
+                    $("#connected").show();
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+

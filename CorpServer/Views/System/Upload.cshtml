@@ -1,0 +1,119 @@
+﻿@model List<FileInfo>
+@{
+    ViewBag.Title = "Upload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Upload a File</h2>
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm("Upload", "System", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "uploadFile(); return false;", id = "localUploadForm" }))
+        {
+            <h3>Local File</h3>
+            <div class="form-group">
+                <label for="fileInput">Select file to upload:</label>
+                <input type="file" id="fileInput" name="file" required aria-describedby="fileHelpText">
+                <small id="fileHelpText" class="form-text text-muted">Select a file from your local device.</small>
+            </div>
+            <button type="submit" class="btn btn-primary" id="localUploadBtn">Upload</button>
+        }
+    </div>
+    <div class="col-md-6">
+        @using (Html.BeginForm("UploadFromLink", "System", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "uploadFile(); return false;", id = "urlUploadForm" }))
+        {
+            <h3>From Url</h3>
+            <div class="form-group">
+                <label for="urlInput">Enter URL:</label>
+                <input type="url" id="urlInput" name="url" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="urlUploadBtn">Upload</button>
+            <br /><br />
+            <div class="alert alert-info" style="display: none;">File upload Started.</div>
+        }
+    </div>
+</div>
+<br />
+<div class="progress mt-3" style="display: none; margin-top:1em;">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+        <span class="sr-only">0% Complete</span>
+    </div>
+</div>
+<br />
+<div class="alert alert-success" style="display: none;">File uploaded successfully.</div>
+<div class="alert alert-danger" style="display: none;">An error occurred while uploading the file.</div>
+
+<div id="files-partial-container">
+    @Html.Partial("ListFilesPartial", Model)
+</div>
+
+@section scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#localUploadBtn').click(function () {
+                var file = $('#file').val();
+                if (file == "") {
+                    alert("Please select a file to upload.");
+                    return false;
+                }
+          });
+
+          $('#urlUploadBtn').click(function () {
+            var url = $('#urlInput').val();
+            if (url == "") {
+              alert("Please enter a URL to upload from.");
+              return false;
+            }
+          });
+        });
+
+        $(function () {
+            $('#localUploadForm').ajaxForm({
+                beforeSend: function () {
+                    // Show the progress bar
+                    $('.progress').show();
+                },
+                uploadProgress: function (event, position, total, percentComplete) {
+                    // Update the progress bar with the new percent value
+                    $('.progress-bar').width(percentComplete + '%');
+                    $('.progress-bar').attr('aria-valuenow', '0').text(percentComplete + '% Complete');
+                    $('.sr-only').text(percentComplete + '% Complete');
+                },
+                success: function () {
+                    // Hide the progress bar and show a success message
+                    $('#files-partial-container').load('@Url.Action("FilesPartial")');
+                    $('.progress-bar').css('width', '0%').attr('aria-valuenow', '0').text('0% Complete');
+                    $('.progress').hide();
+                    $('.alert-success').show();
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                    // Hide the progress bar and show an error message
+                    $('.progress-bar').css('width', '0%').attr('aria-valuenow', '0').text('0% Complete');
+                    $('.progress').hide();
+                    $('.alert-danger').show();
+                }
+            });
+
+            $('#urlUploadForm').ajaxForm({
+                beforeSend: function () {
+                    $('.alert-info').show();
+                },
+                uploadProgress: function (event, position, total, percentComplete) {
+                    $('#files-partial-container').load('@Url.Action("FilesPartial")');
+                },
+                success: function () {
+                    // Hide the progress bar and show a success message
+                    $('#files-partial-container').load('@Url.Action("FilesPartial")');
+                    $('.alert-success').show();
+                    $('.alert-info').hide();
+                },
+                error: function (xhr, status, error) {
+                    //alert(error);
+                    //$('.alert-danger').show();
+                }
+            });
+        });
+    </script>
+}

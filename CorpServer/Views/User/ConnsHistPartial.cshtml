@@ -1,0 +1,207 @@
+﻿@using Models.Common
+@using Models.Users
+@using Tools
+@model User
+@{
+    var userBl = new BL.UserBl();
+
+    string page_path = HttpContext.Current.Request.Url.AbsolutePath;
+    if (HttpContext.Current.Request.ApplicationPath.ToLower() == "/cp") {
+        page_path += "?userName=" + Model.UserName;
+    }
+
+    PageNumberNavigator pnn = new PageNumberNavigator()
+    {
+        PageSize = 5,
+        NavSize = 3,
+        DataCount = userBl.GetPagedConnections(Model.Connections, 0, 0).Count(),
+        PageUrl = page_path,
+        CurrentPageNumAsString = Request.QueryString["p"]
+    };
+    var days = userBl.GetPagedConnections(Model.Connections, pnn.CurrentPage, 5);
+    if (days.Count() == 0)
+    {
+        <tr>
+            <th colspan="5">
+                <h6>no connections yet!</h6>
+            </th>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <th colspan="5">
+                @{
+                    ConnectionInfo last_night_last_conn = null;
+                }
+
+                @{
+                    DateTime? temp = Model.Connections.Last().ConnectionEndDate;
+                    DateTime last_conn_date = new DateTime();
+                    if (temp == null)
+                    {
+                        last_conn_date = Model.Connections.Last().ConnectionStartDate.Date;
+                    }
+                    else
+                    {
+                        last_conn_date = ((DateTime)temp).Date;
+                    }
+                }
+
+                <script>
+                    function isOverlap(r00, r01, r10, r11) {
+                        return Math.max(r00, r10) < Math.min(r01, r11);
+                    }
+                    var multilink_colors = [
+                        ["rgb(219, 84, 97)", "rgb(156, 58, 67)"],
+                        ["rgb(253, 231, 76", "rgb(212, 192, 51)"],
+                        ["rgb(51, 212, 134)", "rgb(40, 173, 109)"]
+                    ];
+                    function changeOpacity(rgb, opacity) {
+                        var temp = rgb.split(",");
+                        last = temp[temp.length - 1];
+                        var output = "";
+                        if (temp.length == 3) {
+                            last = last.replace(')', ', ');
+                            if (last.indexOf(",") == -1) {
+                                last = last + ", ";
+                            }
+                            last = last + opacity + ")";
+                            output = temp[0].replace("rgb", "rgba") + ", " + temp[1] + ", " + last;
+                        } else {
+                            last = opacity + ")";
+                            output = temp[0] + ", " + temp[1] + ", " + temp[2].replace(')', "") + ", " + last;
+                        }
+                    }
+                    $(document).ready(function () {
+                        $(".schedule_conn").hover(function () {
+                            var uid = $(this).attr("class");
+                            var uid = uid.split(" ")[1];
+                            $("." + uid).css("opacity", changeOpacity($("." + uid).css("background-color"), 0.85));
+                            $("." + uid).css("top", "-5%");
+                            $("." + uid).css("bottom", "-5%");
+                        }, function () {
+                            var uid = $(this).attr("class");
+                            var uid = uid.split(" ")[1];
+                            $("." + uid).css("opacity", changeOpacity($("." + uid).css("background-color"), 0.7));
+                            $("." + uid).css("top", "0");
+                            $("." + uid).css("bottom", "0");
+                        });
+                        var data_start = [];
+                        var data_start_str = [];
+                        var data_end = [];
+                        var data_end_str = [];
+                        $(".schedule_conn").each(function () {
+                            var uid = $(this).attr("class").split(" ")[1];
+                            var start = uid.split("T")[0];
+                            var end = uid.split("T")[1];
+                            data_start.push(parseInt(start));
+                            data_start_str.push(start);
+                            data_end.push(parseInt(end));
+                            data_end_str.push(end);
+                        });
+
+                        for (var i = 0; i < data_start.length; i++) {
+                            var overlaps = [i];
+                            for (var j = 0; j < data_start.length; j++) {
+                                if (i != j) {
+                                    if (isOverlap(data_start[i], data_end[i], data_start[j], data_end[j])) {
+                                        overlaps.push(j);
+                                    };
+                                }
+                            }
+                            if (overlaps.length > 1) {
+                                var uid = data_start_str[i] + "T" + data_end_str[i];
+                                overlaps.sort((a, b) => (data_start[a] > data_start[b]) ? 1 : -1)
+                                var ind = 0
+                                var added_elements = [];
+                                for (var x in overlaps) {
+                                    if (data_start[overlaps[x]] < data_start[i] && data_end[i] < data_end[overlaps[x]]) {
+                                        var t_uid = data_start_str[overlaps[x]] + "T" + data_end_str[overlaps[x]]
+                                        if (added_elements.indexOf(t_uid) == -1) {
+                                            ind = ind + 1;
+                                            added_elements.push(t_uid);
+                                        }
+                                    }
+                                }
+
+                                $("." + uid).css("z-index", ind);
+                                if (ind >= multilink_colors.length) {
+                                    alert(ind)
+                                } else {
+                                    $("." + uid).css("background-color", changeOpacity(multilink_colors[ind][0], 0.7));
+                                    $("." + uid).css("border-color", multilink_colors[ind][1]);
+                                }
+                            }
+                        }
+                    });
+                </script>
+
+                <div class="schedule_header">
+                    <span>@(PersianDate.CastToPersian(days.Keys.ToList()[0]))</span>
+                    @for (int i = 6; i < 24; i += 6)
+                    {
+                        <span style="left:@(100 * i / 24)%">@i</span>
+                    }
+                </div>
+
+                @foreach (var day_date in days.Keys)
+                {
+                    if (days.Keys.ToList()[0] != day_date)
+                    {
+                        <span>@PersianDate.CastToPersian(day_date)</span>
+                    }
+                    <div class="schedule_day">
+                        @if (day_date == DateTime.Now.Date)
+                        {
+                            <div class="schedule_splliter_now" style="left:@((100 * (DateTime.Now.Ticks * 1.0 - day_date.Ticks) / TimeSpan.TicksPerDay))%">
+                                <span>now : @DateTime.Now.ToShortTimeString()</span>
+                            </div>
+                        }
+                        @for (int i = 6; i < 24; i += 6)
+                        {
+                            <span class="schedule_splliter" style="left:@(100 * i / 24)%"></span>
+                        }
+                        @foreach (var conn in days[day_date])
+                        {
+                            double left = (100 * (conn.ConnectionStartDate.Ticks * 1.0 - day_date.Ticks) / TimeSpan.TicksPerDay);
+                            DateTime end = conn.ConnectionEndDate == null ? DateTime.Now : (DateTime)conn.ConnectionEndDate;
+                            double width = (100 * (end.Ticks * 1.0 - conn.ConnectionStartDate.Ticks) / TimeSpan.TicksPerDay);
+
+                            if (left < 0)
+                            {
+                                width = width + left;
+                                left = 0;
+                            }
+
+                            if (left + width > 100.0)
+                            {
+                                width = 100 - left;
+                            }
+
+                            string uid = (conn.ConnectionStartDate.Ticks.ToString() + "T" +
+                                (conn.ConnectionEndDate != null ? (DateTime)conn.ConnectionEndDate : DateTime.Now).Ticks.ToString())
+                                .Replace(" ", string.Empty).Replace("/", string.Empty).Replace(":", string.Empty);
+
+                            <div class="schedule_conn @uid" style="left:@left%; width:@width%">
+                                <div class="schedule_conn_info">
+                                    @conn.ConnectionDuration.ToFriendlyString(shortMode:1)
+                                    from @conn.ConnectionStartDate.ToShortTimeString() to @(conn.ConnectionEndDate == null ? "Now" : ((DateTime)conn.ConnectionEndDate).ToShortTimeString())
+                                    @if (conn.ConnectionEndDate != null)
+                                    {
+                                        <span>down: @conn.Download.ToString(), up: @conn.Upload.ToString()</span>
+                                    }
+
+                                </div>
+                            </div>
+                            last_night_last_conn = conn;
+                        }
+                    </div>
+                }
+                <div class="page_navigator">
+                    @Html.Raw(pnn.InsertNavigator())
+                </div>
+            </th>
+        </tr>
+    }
+}

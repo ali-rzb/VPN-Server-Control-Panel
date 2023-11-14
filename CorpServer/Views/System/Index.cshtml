@@ -1,0 +1,119 @@
+﻿@using System.Threading;
+@using BL;
+@using Models.ViewModel;
+@using System.Net.NetworkInformation;
+@using System.Diagnostics
+@{
+    ViewBag.Title = "Server Maneger";
+    var systemBl = new SystemBl();
+    var firstCall = systemBl.GetServerPerformance();
+}
+
+<h3>Resource Monitor</h3>
+<div class="text-success">@(TempData["SuccessMessage"]?.ToString())</div>
+<div class="text-warning">@(TempData["ErrorMessage"]?.ToString())</div>
+
+<script lang="en" type="text/javascript">
+    $(document).ready(function () {
+        var elem = document.getElementsByClassName("chart");
+        var btns = document.getElementsByClassName("selector");
+        $(".selector").click(
+            function () {
+                var id = $(this).attr("for");
+                if (id == "all") {
+                    for (var i in elem) {
+                        try {
+                            $(".chart").slideDown();
+                            btns[i].style.backgroundColor = "rgba(33,33,33,0.2)";
+                        } catch (e) { }
+                    }
+                } else {
+                    for (var i in elem) {
+                        try {
+                            $(".chart").slideUp();
+                            btns[i].style.backgroundColor = "rgba(33,33,33,0.1)";
+                        } catch (e) { }
+                    }
+                    $(this).css("background-color", "rgba(2,117,216,0.2)")
+                    $("#" + id).slideDown();
+                }
+        });
+        setInterval(function () {
+            $.getJSON("@Request.ApplicationPath/System/GetServerPerformance", function (data) {
+                var items = {};
+                $.each(data, function (key, val) {
+                    items[key] = val;
+                });
+                sendSpeed = 0; recSpeed = 0;
+                if (parseInt($("#NetUsageRecieved").html()) != 0) {
+                    sendSpeed = (items["NetUsageSent"] - parseInt($("#NetUsageSent").html())).toFixed(1);
+                    recSpeed = (items["NetUsageRecieved"] - parseInt($("#NetUsageRecieved").html())).toFixed(1)
+                    $("#NetUsageSendSpeed").html(sendSpeed);
+                    $("#NetUsageRecieveSpeed").html(recSpeed);
+                }
+                var keys = Object.keys(items);
+                for (var i = 0; i < keys.length; i++) { $("#" + keys[i]).html(items[keys[i]]); }
+                $("#RamPercentage").html(items["RamUsed"] + "/" + parseInt(100.0 * items["RamUsed"] / items["RamTotal"]) + "%");
+                $("#NetUsageSpeedLabel").html(sendSpeed + " - " + recSpeed);
+            });
+        }, 1000);
+    });
+</script>
+<div style="display: none" id="NetSpeed">10</div>
+<div style="display: none" id="NetUsageRecieved">0</div>
+<div style="display: none" id="NetUsageSent">0</div>
+
+<div style="display: none" id="NetUsageRecieveSpeed">0</div>
+<div style="display: none" id="NetUsageSendSpeed">0</div>
+
+<div style="display: none" id="NetUsageSpeedLabel">0</div>
+
+<div style="display: none" id="RamTotal">@firstCall.RamTotal</div>
+<div style="display: none" id="RamUsed">0</div>
+<div style="display: none" id="RamPercentage">0%</div>
+
+<div style="display: none" id="CpuUsage">0</div>
+
+
+<button class="selector" for="Cpu_Chart" style="background-color: rgba(33,33,33,0.2)">CPU</button>
+<button class="selector" for="Ram_Chart">RAM</button>
+<button class="selector" for="Net_Chart">Network</button>
+<button class="selector" for="all">All</button>
+
+<canvas id="Cpu_Chart" class="chart"></canvas>
+<canvas id="Ram_Chart" class="chart" style="display: none;"></canvas>
+<canvas id="Net_Chart" class="chart" style="display: none;"></canvas>
+
+
+
+@Scripts.Render("~/Content/vendor/chart.js/Chart.min.js")
+@Scripts.Render("~/Content/vendor/datatables/jquery.dataTables.js")
+@Scripts.Render("~/Content/vendor/datatables/dataTables.bootstrap4.js")
+@Scripts.Render("~/Content/Chart/RealtimeChart.js")
+<script>
+    setRealtimeChart("Cpu_Chart", "CpuUsage", 100, 0, 1000, [{
+        label: "cpu (%)",
+        data_element_id: "CpuUsage",
+        color: "rgba(2,117,216,0.2)",
+        border_color: "rgba(2,117,216,1)"
+    }]);
+    setRealtimeChart("Ram_Chart", "RamPercentage", parseInt($("#RamTotal").html()), 0, 1000, [{
+        label: "ram (gb)",
+        data_element_id: "RamUsed",
+        color: "rgba(2,117,216,0.2)",
+        border_color: "rgba(2,117,216,1)"
+    }]);
+    setRealtimeChart("Net_Chart", "NetUsageSpeedLabel", parseInt($("#NetSpeed").html()), 0, 1000, [{
+        label: "sent",
+        data_element_id: "NetUsageSendSpeed",
+        color: "rgba(2,117,216,0.2)",
+        border_color: "rgba(2,117,216,1)"
+    },
+    {
+        label: "recieved (mb per sec)",
+        data_element_id: "NetUsageRecieveSpeed",
+        color: "rgba(242, 96, 103,0.2)",
+        border_color: "rgba(242, 96, 103,1)"
+    }]);
+
+</script>

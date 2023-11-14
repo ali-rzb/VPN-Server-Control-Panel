@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "User Logs";
+}
+
+<div class="text-success">@(TempData["SuccessMessage"]?.ToString())</div>
+<div class="text-warning">@(TempData["ErrorMessage"]?.ToString())</div>
+
+
+<div id="loadingBar" style="width:100%;height:10px;background-color:#ccc;">
+    <div id="progress" style="width:0%;height:100%;background-color:#4caf50;"></div>
+</div>
+<div id="result"></div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var progressBar = $("#progress");
+            var loadingBar = $("#loadingBar");
+
+            // Start fetching the random numbers
+            $.ajax({
+                url: '@Url.Action("LoadUsersLogs", "User")',
+                dataType: "html",
+                beforeSend: function () {
+                    // Show loading bar
+                    progressBar.animate({ width: "100%" }, 5000);
+                },
+                success: function (data) {
+                    // Hide loading bar and load the partial view
+                    progressBar.stop().css("width", "0%");
+                    loadingBar.css("display", "none");
+                    $("#result").html(data);
+                },
+                error: function () {
+                    // Hide loading bar and show an error message
+                    progressBar.stop().css("width", "0%");
+                    loadingBar.css("display", "none");
+                    $("#result").html("<p>Failed to load data.</p>");
+                    
+                }
+            });
+        });
+    </script>
+}

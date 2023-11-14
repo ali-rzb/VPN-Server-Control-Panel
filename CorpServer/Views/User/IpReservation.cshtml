@@ -1,0 +1,80 @@
+﻿@using Models.ViewModel
+@using Models.Common
+@using Models.Users
+@using Models
+@using Tools
+@model List<User>
+@{
+    ViewBag.Title = "Ip Reservations";
+}
+
+<h3 style="display: inline-block; ">Ip Reservations</h3>
+
+<div class="text-success">@(TempData["SuccessMessage"]?.ToString())</div>
+<div class="text-warning">@(TempData["ErrorMessage"]?.ToString())</div>
+
+<button id="auto-fill-btn" class="btn btn-default">Auto Fill</button>
+<button id="clear-btn" class="btn btn-default">Clear</button>
+
+@using (Html.BeginForm())
+{
+    if (Model.Count() != 0)
+    {
+        <br />
+        <table class="table">
+            <tr>
+                <th><h6>User Name</h6></th>
+                <th><h6>Ip</h6></th>
+            </tr>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr>
+                    <th>@Model[i].UserName</th>
+                    <th>
+                        @Html.EditorFor(model => model[i].ReservedIpAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    </th>
+                    @Html.HiddenFor(model => model[i].UserName)
+                    @Html.HiddenFor(model => model[i].SID)
+                </tr>
+            }
+        </table>
+        <input type="submit" value="Update" class="btn btn-default" />
+    }
+}
+
+<script>
+    $(document).ready(function () {
+        $('#auto-fill-btn').click(function () {
+            var ipAddress = "10.10.10.2";
+            var inputFields = $('input[type="text"]');
+            var usedIPs = [];
+            inputFields.each(function () {
+                // get the current IP address value, if any
+                var currentValue = $(this).val();
+                if (currentValue && currentValue.startsWith("10.10.10.")) {
+                    usedIPs.push(currentValue);
+                }
+            });
+            inputFields.each(function () {
+                // skip input fields that already have an IP address starting with "10.10.10."
+                if ($(this).val().startsWith("10.10.10.")) {
+                    return true; // continue to next iteration of the loop
+                }
+                // assign the next available IP address
+                while (usedIPs.includes(ipAddress)) {
+                    var parts = ipAddress.split(".");
+                    parts[3] = parseInt(parts[3]) + 1;
+                    ipAddress = parts.join(".");
+                }
+                $(this).val(ipAddress);
+                usedIPs.push(ipAddress);
+                var parts = ipAddress.split(".");
+                parts[3] = parseInt(parts[3]) + 1;
+                ipAddress = parts.join(".");
+            });
+        });
+        $('#clear-btn').click(function () {
+            $('input[type="text"]').val("");
+        });
+    });
+</script>

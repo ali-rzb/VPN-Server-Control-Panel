@@ -1,0 +1,134 @@
+﻿@using Models.ViewModel
+@using Models.Common
+@using Models
+@using Tools
+@model List<UserLogVm>
+@{
+    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+    string duration_from_first_log = String.Empty;
+    if (Model.Count() != 0)
+    {
+        duration_from_first_log = (DateTime.Now - new DateTime((from user in Model select user.FirstLog.Ticks).Min())).ToFriendlyString();
+    }
+    int onlines_count = 0;
+}
+
+@if (!string.IsNullOrEmpty(TempData["ErrorMessage"]?.ToString()))
+{
+    <div class="text-warning">@(TempData["ErrorMessage"]?.ToString())</div>
+    <br/>
+}
+
+<h3 style="display: inline-block; ">UserLogs</h3>
+
+@if (!string.IsNullOrEmpty(TempData["LoadingTime"]?.ToString()))
+{
+    <h6 style="display: inline-block; ">
+        &emsp;
+        loading time : @(TempData["LoadingTime"]?.ToString())
+    </h6>
+}
+
+@if (Model.Count() != 0)
+{
+    <table class="table">
+        <tr>
+            <th><h6>User Name</h6></th>
+            <th><h6>Status</h6></th>
+            <th><h6>Total Download</h6></th>
+            <th><h6>Total Duration</h6></th>
+            <th><h6>Conn Count</h6></th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            if (item.Connections_Count == 0)
+            {
+                <tr>
+                    <th>
+                        <span style="font-weight:500">
+                            @item.UserName
+                            @if (!item.Enabled)
+                            {
+                                <img src="~/Content/lock.png" style="width: 10px;" />
+                            }
+                            @if (item.ChangePassNextTime)
+                            {
+                                <img src="~/Content/no-key.png" style="width: 10px;" />
+                            }
+                        </span>
+                    </th>
+                    <th>
+                        <span style="font-weight:500">no connections yet!</span>
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th>
+                        @Html.ActionLink("Remove", "RemoveUser", "User", new { username = item.UserName }, new { @class = "AskConfirm ActionLink", msg = "Remove The Entity?" })
+                    </th>
+                    <th>
+                        @Html.ActionLink("Edit", "EditUser", "User", new { username = item.UserName }, new { @class = "ActionLink" })
+                    </th>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>
+                        @Html.ActionLink(item.UserName, "UserLogs", "User", new { userName = item.UserName }, null)
+                        @if (!item.Enabled)
+                        {
+                            <img src="~/Content/lock.png" style="width: 10px;" />
+                        }
+                        @if (item.ChangePassNextTime)
+                        {
+                            <img src="~/Content/no-key.png" style="width: 10px;" />
+                        }
+                    </th>
+                    <th>
+                        @if (item.Status)
+                        {
+                            onlines_count += 1;
+                            <div class="connected"></div>
+                        }
+                        else
+                        {
+                            <div class="disconnected"></div>
+                        }
+                        @if (item.FullConnection)
+                        {
+                            <img src="~/Content/banned.png" class="status_class" />
+                        }
+                    </th>
+                    <th>@item.Total_Download.ToString()</th>
+                    @*<th>@item.Total_Upload.ToString()</th>*@
+                    <th>@item.Total_Duration</th>
+                    <th>@item.Connections_Count</th>
+                    <th>
+                        @Html.ActionLink("Edit", "EditUser", "User", new { username = item.UserName }, new { @class = "ActionLink" })
+                        @if (!item.Enabled)
+                        {
+                            <span>/</span>
+                            @Html.ActionLink("Enable", "EnableUser", "User", new { username = item.UserName }, new { @class = "AskConfirm ActionLink", msg = "Are you sure about unlocking this account?" })
+                        }
+                    </th>
+                </tr>
+            }
+        }
+        <tr>
+            <th>
+                <h6>
+                    Total (@duration_from_first_log)
+                </h6>
+            </th>
+            <th>
+                @if (onlines_count != 0)
+                {<h6> @onlines_count.ToString() onlines </h6>}
+            </th>
+            <th><h6>@(InfoTransferUnit.ParseBytes((from u in Model select u.Total_Download.TotalB).Sum()).ToString())</h6></th>
+            <th><h6></h6></th>
+            <th><h6></h6></th>
+            <th><h6></h6></th>
+        </tr>
+    </table>
+}

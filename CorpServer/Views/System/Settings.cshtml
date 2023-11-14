@@ -1,0 +1,46 @@
+﻿@model Models.ServerSetting
+
+@{
+    ViewBag.Title = "Server Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Server Settings</h3>
+
+<div class="text-success">@(TempData["SuccessMessage"]?.ToString())</div>
+<div class="text-warning">@(TempData["ErrorMessage"]?.ToString())</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <br />
+    if (Model != null)
+    {
+        <table class="col-md-5 table">
+            <tr>
+                <th>@Html.LabelFor(model => model.IpAddress, htmlAttributes: new { @class = "control-label col-md-7" })</th>
+                <th>
+                    @Html.EditorFor(model => model.IpAddress)
+                    @Html.ValidationMessageFor(model => model.IpAddress, "", new { @class = "text-danger" })
+                </th>
+            </tr>
+            <tr>
+                <th>@Html.LabelFor(model => model.RdpRuleStatus, htmlAttributes: new { @class = "control-label col-md-7" })</th>
+                <th>
+                    @Html.EditorFor(model => model.RdpRuleStatus)
+                    @Html.ValidationMessageFor(model => model.RdpRuleStatus, "", new { @class = "text-danger" })
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ClientsCanChangePass, htmlAttributes: new { @class = "control-label col-md-7" })
+                </th>
+                <th>
+                    @Html.EditorFor(model => model.ClientsCanChangePass)
+                    @Html.ValidationMessageFor(model => model.ClientsCanChangePass, "", new { @class = "text-danger" })
+                </th>
+            </tr>
+        </table>
+        <input type="submit" value="Save" class="btn btn-default" />
+    }
+}

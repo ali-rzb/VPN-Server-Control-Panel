@@ -1,0 +1,56 @@
+﻿@using BL
+@model Models.ViewModel.ChangePassVm
+@{
+    ViewBag.Title = "Change Password";
+    Layout = "~/Views/Shared/_Layout_login.cshtml";
+}
+<script src="https://www.google.com/recaptcha/api.js?render=6Ldx-QEkAAAAAJTKJLW52m7T0CquyCfANBu0wg6I"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('6Ldx-QEkAAAAAJTKJLW52m7T0CquyCfANBu0wg6I', { action: 'Login' }).then(function (token) {
+            $("#GoogleRecaptchaToken").val(token);
+        });
+    });
+</script>
+
+@if (Model != null)
+{
+    using (Html.BeginForm())
+    {
+        <form>
+            <div class="form-group">
+                <div class="form-label-group text-secondary">
+                    Your account is locked, you need to change your password.
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-label-group">
+                    Username : @Model.Username
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-label-group">
+                    @Html.EditorFor(a => a.CurrentPassword, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "", @required = "required", @autofocus = "autofocus" } })
+                    <label for="AdminModel_Password">Current Password</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-label-group">
+                    @Html.EditorFor(a => a.NewPassword, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "", @required = "required", @autofocus = "autofocus" } })
+                    <label for="AdminModel_Password">New Password</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-label-group">
+                    @Html.EditorFor(a => a.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "", @required = "required", @autofocus = "autofocus" } })
+                    <label for="AdminModel_Password">Password Confirm</label>
+                </div>
+            </div>
+
+            @Html.HiddenFor(a => a.GoogleRecaptchaToken)
+
+            <input type="submit" value="Enter" class="btn btn-primary btn-block" />
+
+        </form>
+    }
+}

@@ -1,0 +1,57 @@
+﻿@model FileInfo
+
+@{
+    ViewBag.Title = "FileViewer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string fileName = Model.Name;
+    string filePath = (Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/Uploads/" + fileName).ToLower();
+    string short_name = Path.GetFileNameWithoutExtension(fileName);
+    int size = 20;
+    if (short_name.Length > size)
+    {
+        short_name = short_name.Substring(0, size) + "..";
+    }
+
+}
+
+<h3>File Information</h3>
+<table class="table table-striped">
+    <tr>
+        <td>File Name</td>
+        <td>Size</td>
+        <td>Creation Date</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            @short_name@Model.Extension
+        </td>
+        <td>@Models.Common.InfoTransferUnit.ParseBytes(Model.Length).ToString()</td>
+        <td>@Model.CreationTime.ToString("M/d/yy H:mm")</td>
+
+        <td>
+            <a href="@filePath">
+                <img src="~/Content/download.png" alt="Download" style="max-height: 20px; max-width: 20px;">
+            </a>
+        </td>
+    </tr>
+</table>
+
+
+<div>
+    @if (filePath.EndsWith(".jpg") || filePath.EndsWith(".jpeg") || filePath.EndsWith(".png") || filePath.EndsWith(".gif"))
+    {
+        <img src="@Url.Content(filePath)" alt="Image" style="max-width:100%" />
+    }
+    else if (filePath.EndsWith(".mp4") || filePath.EndsWith(".avi") || filePath.EndsWith(".mov") || filePath.EndsWith(".mkv"))
+    {
+        <video src="@Url.Content(filePath)" controls style="max-width:100%">
+            Your browser does not support the video tag.
+        </video>
+    }
+    else
+    {
+        <p>File format not supported.</p>
+    }
+</div>
+

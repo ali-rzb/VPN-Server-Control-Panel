@@ -1,0 +1,186 @@
+﻿@model List<FileInfo>
+@{ var supported_view_formats = new List<string>() { ".jpg", ".jpeg", ".png", ".gif", ".mp4", ".avi", ".mov", ".mkv" };}
+<style>
+    .copy-link-button {
+        color: #fff;
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        padding: .25rem .5rem;
+        font-size: .875rem;
+        line-height: 1.5;
+        border-radius: .2rem;
+    }
+
+        .copy-link-button:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+
+    .delete-button {
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+        padding: .25rem .5rem;
+        font-size: .875rem;
+        line-height: 1.5;
+        border-radius: .2rem;
+    }
+
+        .delete-button:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+    .progress-bar-small {
+        display: none;
+        width: 100%;
+        padding: 5px 5px;
+        background-color: #ddd;
+        position: relative;
+        margin-top: 20px;
+    }
+
+    .progress-bar-small-fill {
+        height: 100%;
+        background-color: #4CAF50;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+    }
+    .table td {
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .scrollable-filename {
+        overflow: auto;
+        white-space: nowrap;
+    }
+</style>
+
+<script>
+    function deleteFileLine(fileName) {
+        $.ajax({
+            type: "POST",
+            url: "@Request.ApplicationPath/System/RemoveFileFromList",
+            data: { fileName: fileName },
+            success: function (response) {
+                // Handle success response
+                console.log("File line removed successfully.");
+            },
+            error: function (xhr, status, error) {
+                // Handle error response
+                console.log("Error removing file line.");
+            }
+        });
+    }
+    $(document).ready(function () {
+        // Define a function to call the AJAX request and handle the response
+        function getFileSizes() {
+            $.ajax({
+                type: "GET",
+                url: "@Request.ApplicationPath/System/GetUploadedFilesJson",
+                success: function (data) {
+                    var fileSizes = JSON.parse(data);
+                    var message = "";
+                    for (var fileName in fileSizes) {
+                        var asciiString = fileSizes[fileName].Item3.trim().split('').map(function (char) { return char.charCodeAt(0); }).join('_');
+
+                        if (fileSizes[fileName].Item1 < fileSizes[fileName].Item2) {
+                            $('#' + asciiString).parent().show();
+                            $('#' + asciiString).css('width', (fileSizes[fileName].Item1 / fileSizes[fileName].Item2) * 100 + '%');
+                            $('#size_' + asciiString).text(fileSizes[fileName].Item4);
+                        } else {
+                            $('#' + asciiString).parent().hide();
+                            deleteFileLine(fileSizes[fileName].Item3.trim());
+                        }
+                    }
+                }
+            });
+        }
+
+        // Call getFileSizes() every 5 seconds
+        setInterval(getFileSizes, 5000);
+    });
+</script>
+
+@if (Model.Count() != 0)
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 50%;">File Name</th>
+                    <th style="width: 27%;">Actions</th>
+                    <th style="width: 8%;">Size</th>
+                    <th style="width: 8%;">Created Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var file in Model)
+                {
+                    string fileFullName = Path.GetFileName(file.FullName);
+
+                    string[] asciiCodes = new string[fileFullName.Length];
+                    for (int i = 0; i < fileFullName.Length; i++)
+                    {
+                        int asciiCode = (int)fileFullName[i];
+                        asciiCodes[i] = asciiCode.ToString();
+                    }
+                    string asciiString = string.Join("_", asciiCodes);
+
+
+                    var fileName = Path.GetFileNameWithoutExtension(file.FullName);
+                    var fileExt = Path.GetExtension(file.FullName);
+                    
+                    var fullUrl = Request.Url.Scheme + "://" + BL.Credentials.PublicAddress + "/Down/" + file;
+                    var size = Models.Common.InfoTransferUnit.ParseBytes(file.Length).ToString();
+
+                    <tr>
+                        <td>
+                            <a class="scrollable-filename" href="@fullUrl">@fileName@fileExt</a>
+                            <div class="progress-bar-small">
+                                <div id="@asciiString" class="progress-bar-small-fill"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-secondary btn-xs" onclick="copyToClipboard('@fullUrl')">Copy Link</button>
+                            @Html.ActionLink("Remove", "Delete", "System", new { fileName = file }, new { @class = "btn btn-danger btn-xs delete-link", data_file = file })
+                            @if (supported_view_formats.Contains(file.Extension.ToLower()))
+                            {
+                                @Html.ActionLink("View", "FileViewer", "System", new { fileName = Tools.Encrypt.ObfuscateFileName(file.Name) }, new { @class = "btn btn-primary btn-xs", target = "_blank" })
+                            }
+                        </td>
+                        <td id="size_@asciiString">@size</td>
+                        <td>@file.CreationTime.ToString("M/d/yy H:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+<script>
+    function copyToClipboard(text) {
+        var dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+        //alert("Link copied to clipboard: " + text);
+    }
+    $(document).ready(function () {
+        $('.delete-link').click(function (e) {
+            e.preventDefault();
+            var file = $(this).data('file');
+            if (confirm('Are you sure you want to delete "' + file + '"?')) {
+                window.location.href = $(this).attr('href');
+            }
+        });
+    });
+</script>

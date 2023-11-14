@@ -1,0 +1,1 @@
+Microsoft Windows [Version 10.0.19045.2486](c) Microsoft Corporation. All rights reserved.C:\Program Files\IIS Express>"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "http://haviro.sbs/cp/Uploads/kyokushin.pdf" /nC:\Program Files\IIS Express>
