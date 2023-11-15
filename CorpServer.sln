@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PreventMultilink", "PreventMultilink\PreventMultilink.csproj", "{896E6B08-061A-4C2C-BA94-A8DFE33C41EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreatBlock", "ThreatBlock\ThreatBlock.csproj", "{01DD859F-BFAB-4292-8A4F-B024AC8E5B85}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haviro", "Haviro\Haviro.csproj", "{3E537B70-A5E6-4258-951B-F95562556FB3}"
 EndProject
 Global
@@ -49,10 +47,6 @@ Global
 		{896E6B08-061A-4C2C-BA94-A8DFE33C41EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{896E6B08-061A-4C2C-BA94-A8DFE33C41EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{896E6B08-061A-4C2C-BA94-A8DFE33C41EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01DD859F-BFAB-4292-8A4F-B024AC8E5B85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01DD859F-BFAB-4292-8A4F-B024AC8E5B85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01DD859F-BFAB-4292-8A4F-B024AC8E5B85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01DD859F-BFAB-4292-8A4F-B024AC8E5B85}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3E537B70-A5E6-4258-951B-F95562556FB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3E537B70-A5E6-4258-951B-F95562556FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E537B70-A5E6-4258-951B-F95562556FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU

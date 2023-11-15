@@ -13,13 +13,6 @@ namespace PreventMultilink
 {
     internal class Program
     {
-        public static List<string> debug_values = new List<string>()
-        {
-            "\r\nUser:               mary.f                              \r\nDomain:             CORP                              \r\nConnected from:                                   \r\nDuration:           0 days 3 hours 10 mins 34 secs \r\nRestriction state:  Unknown                              \r\n\r\nUser:               ayda.f                              \r\nDomain:             CORP                              \r\nConnected from:                                   \r\nDuration:           0 days 16 hours 4 mins 5 secs \r\nRestriction state:  Unknown                              \r\n\r\nUser:               maryam.gh                              \r\nDomain:             CORP                              \r\nConnected from:                                   \r\nDuration:           0 days 0 hours 21 mins 39 secs \r\nRestriction state:  Unknown                              \r\n\r\nUser:               hossein.f                              \r\nDomain:             CORP                              \r\nConnected from:                                   \r\nDuration:           0 days 0 hours 55 mins 51 secs \r\nRestriction state:  Unknown                              \r\n\r\nUser:               ali.r                              \r\nDomain:             CORP                              \r\nConnected from:                                   \r\nDuration:           0 days 0 hours 0 mins 29 secs \r\nRestriction state:  Unknown                              \r\n\r\nUser:               aban.m                              \r\nDomain:             CORP                              \r\nConnected from:                                   \r\nDuration:           0 days 1 hours 52 mins 2 secs \r\nRestriction state:  Unknown                              \r\n\r\nUser:               ali.r                              \r\nDomain:             CORP                              \r\nConnected from:                                   \r\nDuration:           0 days 0 hours 0 mins 1 secs \r\nRestriction state:  Unknown                              \r\n\r\nUser:               mina.f                              \r\nDomain:             CORP                              \r\nConnected from:                                   \r\nDuration:           0 days 0 hours 10 mins 22 secs \r\nRestriction state:  Unknown                              \r\n\r\n",
-            "\r\nClient Status    \r\n=============    \r\n                 \r\nConnection        : ali.r     \r\nDuration          : 0 Days 0 Hours 2 Mins 1 secs \r\nRestriction state : Unknown                              \r\n                  \r\nStatistics  \r\n----------  \r\nBytes In       : 36176        Bytes out       : 190109       \r\nFrames in      : 291          Frames out      : 260          \r\nCompression in : 0 %              Compression out : 0 %  \r\n                 \r\nErrors           \r\n------ \r\nCRC      : 0                  Framing           : 0             \r\nTime-out : 0                  Hardware Overruns : 0             \r\nAlignment: 0                  Buffer Overruns   : 0             \r\n               \r\nNetwork Registration      \r\n--------------------      \r\nIP Address  : 10.10.10.28 \r\nIPv6 Prefix :   \r\nIPv6 Address:   \r\nNetBEUI name:  \r\n\r\n\r\nClient Status    \r\n=============    \r\n                 \r\nConnection        : ali.r     \r\nDuration          : 0 Days 0 Hours 0 Mins 1 secs \r\nRestriction state : Unknown                              \r\n                  \r\nStatistics  \r\n----------  \r\nBytes In       : 5955         Bytes out       : 8872         \r\nFrames in      : 37           Frames out      : 23           \r\nCompression in : 0 %              Compression out : 0 %  \r\n                 \r\nErrors           \r\n------ \r\nCRC      : 0                  Framing           : 0             \r\nTime-out : 0                  Hardware Overruns : 0             \r\nAlignment: 0                  Buffer Overruns   : 0             \r\n               \r\nNetwork Registration      \r\n--------------------      \r\nIP Address  : 10.10.10.23 \r\nIPv6 Prefix :   \r\nIPv6 Address:   \r\nNetBEUI name:  \r\n\r\n\r\n",
-            "David",
-            "Eve"
-        };
         static bool plot = false;
         static void Main(string[] args)
         {
@@ -30,6 +23,14 @@ namespace PreventMultilink
                 UserBl userBl = new UserBl();
                 if (args.Length != 0)
                 {
+                    if (args.Length == 2)
+                    {
+                        if (args[1] == "print")
+                        {
+                            plot = true;
+                        }
+                    }
+
                     if (args[0] == "conn")
                     {
                         Connection();
@@ -42,17 +43,6 @@ namespace PreventMultilink
                     {
                         if(plot)
                             Console.WriteLine("Invalid argument. Please use 'conn' or 'disconn'.");
-                    }
-                    if (args.Length == 2)
-                    {
-                        try
-                        {
-                            plot = bool.Parse(args[1]);
-                        }
-                        catch (Exception)
-                        {
-
-                        }
                     }
                 }
                 else
@@ -243,14 +233,18 @@ namespace PreventMultilink
                 {
                     Thread.Sleep(500);
                     var new_conn_users = GetConnections();
-                    if(plot)
+                    if (plot)
                         Console.WriteLine($"{i} - [{string.Join(" - ", new_conn_users)}]");
+
+
+                    List<string> new_conn_users_temp = new List<string>(new_conn_users);
                     foreach (var conn_user in conn_users)
                     {
-                        if (!new_conn_users.Contains(conn_user))
-                        {
+                        var index = new_conn_users_temp.IndexOf(conn_user);
+                        if (index == -1)
                             target_list.Add(conn_user);
-                        }
+                        else
+                            new_conn_users_temp.RemoveAt(index);
                     }
                     if(target_list.Count > 0 || new_conn_users.Count == 0)
                     {
@@ -292,7 +286,6 @@ namespace PreventMultilink
                 if (plot)
                     Console.Write(ex.Message);
             }
-            Console.ReadKey();
         }
     }
 }
