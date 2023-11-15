@@ -364,5 +364,7 @@ FodyWeavers.xsd
 
 
 # Custom ignores
+Haviro/
+Client/
 /Haviro/
 /Client/
