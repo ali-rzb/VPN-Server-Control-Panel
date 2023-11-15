@@ -20,8 +20,13 @@ Welcome to the Windows VPN Server Management Portal, a feature-rich C# MVC proje
 4. **Activity Monitoring:**
    - Observe the time and duration of connections for each VPN user, gaining insights into user activity.
 
+![Screenshot 2023-11-15 094429](https://github.com/ali-rzb/VPN-Server-Control-Panel/assets/63366614/a86770cf-d75f-4ae9-b180-ea5499ff3162)
+
 5. **Connection History Visualization:**
    - View user-friendly plots depicting connection trends per hour over the past few days.
+  
+![Screenshot 2023-11-15 094623](https://github.com/ali-rzb/VPN-Server-Control-Panel/assets/63366614/b5d0aa93-3bd6-48a4-a417-bd6bf900783e)
+
 
 6. **File Uploads:**
    - Conveniently upload files to the server directly through the portal for seamless data transfer.
