@@ -4,14 +4,14 @@
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout_login.cshtml";
 }
-<script src="https://www.google.com/recaptcha/api.js?render=6Ldx-QEkAAAAAJTKJLW52m7T0CquyCfANBu0wg6I"></script>
-<script>
-    grecaptcha.ready(function () {
-        grecaptcha.execute('6Ldx-QEkAAAAAJTKJLW52m7T0CquyCfANBu0wg6I', { action: 'Login' }).then(function (token) {
-            $("#GoogleRecaptchaToken").val(token);
+@*<script src="https://www.google.com/recaptcha/api.js?render=your_site_key"></script>
+    <script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('your_site_key', { action: 'Login' }).then(function (token) {
+                $("#GoogleRecaptchaToken").val(token);
+            });
         });
-    });
-</script>
+    </script>*@
 
 
 @using (Html.BeginForm())
@@ -38,13 +38,9 @@
             </div>
         </div>
 
-        @*<div class="g-recaptcha" data-sitekey="6Lc839AjAAAAAMgEcWN7RM6LqBzP83mywgc7ccLq"></div>*@
-        @Html.HiddenFor(a => a.GoogleRecaptchaToken)
+        @*@Html.HiddenFor(a => a.GoogleRecaptchaToken)*@
 
         <input type="submit" value="Enter" class="btn btn-primary btn-block" />
 
     </form>
-    @*<div class="text-center">
-            <a class="d-block small" href="~/Cpanel/Admin/Forget">@LangData.Get("Forget")</a>
-        </div>*@
 }

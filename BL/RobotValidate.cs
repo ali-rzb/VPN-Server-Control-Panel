@@ -13,8 +13,8 @@ namespace BL
     public class RobotValidate
     {
         private Dictionary<string, string> Keys = new Dictionary<string, string>() {
-            {"Admin CP", "6Lc839AjAAAAANoZvre0Nm9AYHdYMnjsm6D2E2vI" },
-            {"Client CP", "6Ldx-QEkAAAAACKL_1cSSL4GBeCKfjEBUy4A-fsD" },
+            {"Admin CP", "XXXXX" },
+            {"Client CP", "YYYYY" },
         };
         private string SecretKey { get; set; }
         public RobotValidate(string site = null)
