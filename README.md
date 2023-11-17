@@ -39,6 +39,16 @@ Welcome to the Windows VPN Server Management Portal, a feature-rich C# MVC proje
 
 9. **Usage Statistics:**
    - Monitor and track total hours, downloads, and uploads for each user, enabling informed decision-making and resource optimization.
+  
+10. **Seperate Panel for Users:**
+      - The client panel provides users with the following capabilities:
+         - View their connection history and other statistical data.
+         - Modify their password and personal information.
+         - Access downloadable applications and instructional videos for guidance.
+    
+
+![Screenshot 2023-11-17 at 09-47-48 ali r - Haviro Server](https://github.com/ali-rzb/VPN-Server-Control-Panel/assets/63366614/64ee123f-f97e-46bd-ba6d-2639b2937749)
+
 
 # Windows VPN Server Management Portal - Installation Guide
 
@@ -100,5 +110,17 @@ Follow these steps to set up the Windows VPN Server Management Portal on your se
 
 - Upon the initial webpage access and after logging in with an admin user, you will be prompted to provide the server's IP address.
 - Enter the IP address of the server where the web application is hosted.
+
+## 12. Setup Client Panel
+- Create a new website or application specifically for the client panel.
+- Similar to cPanel, the user's panel requires admin privileges. Adjust its user app pool to match the cPanel app pool for seamless functionality.
+- [Download](https://github.com/ali-rzb/VPN-Server-Control-Panel/releases/download/main/Client.rar) the compiled files and copy them to the root directory of the client panel application.
+
+Note: both the cPanel and the users panel login for had the google recaptcha to prevent ... but because their server and client side keys needed to be changed, in the released version, this ability was removed, in order to enable recaptcha first you need to gather your own rrecaptcha codes and update these files :
+- BL.RobotValidate (Update Keys dictionary with your keys)
+- Client.Home.Login (view) (Uncomment comments and replace your site key)
+- Client.Home.Login (controller) (Uncomment comments in the Login method)
+- CorpServer.User.Login (view) (Uncomment the commented line and replace your site key)
+- CorpServer.User.Login (controller) (Uncomment comments in the Login method)
 
 Your Windows VPN Server Management Portal is now ready for use. Access it through your web browser and enjoy streamlined server management.
