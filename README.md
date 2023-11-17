@@ -116,11 +116,14 @@ Follow these steps to set up the Windows VPN Server Management Portal on your se
 - Similar to cPanel, the user's panel requires admin privileges. Adjust its user app pool to match the cPanel app pool for seamless functionality.
 - [Download](https://github.com/ali-rzb/VPN-Server-Control-Panel/releases/download/main/Client.rar) the compiled files and copy them to the root directory of the client panel application.
 
-Note: both the cPanel and the users panel login for had the google recaptcha to prevent ... but because their server and client side keys needed to be changed, in the released version, this ability was removed, in order to enable recaptcha first you need to gather your own rrecaptcha codes and update these files :
-- BL.RobotValidate (Update Keys dictionary with your keys)
-- Client.Home.Login (view) (Uncomment comments and replace your site key)
-- Client.Home.Login (controller) (Uncomment comments in the Login method)
-- CorpServer.User.Login (view) (Uncomment the commented line and replace your site key)
-- CorpServer.User.Login (controller) (Uncomment comments in the Login method)
+## Note: Recaptcha Integration
+Please be aware that the initial release included Google reCAPTCHA in both the cPanel and the user's panel login for enhanced security. However, due to the necessity of changing server and client-side keys, this feature was temporarily disabled in the released version.
+To enable reCAPTCHA, follow these steps within your project and recompile:
+   - BL.RobotValidate (Update the Keys dictionary with your keys)
+   - Client.Home.Login (view) (Uncomment comments and replace your site key)
+   - Client.Home.Login (controller) (Uncomment comments in the Login method)
+   - CorpServer.User.Login (view) (Uncomment the commented line and replace your site key)
+   - CorpServer.User.Login (controller) (Uncomment comments in the Login method)
+Make these adjustments directly in your project files and then recompile. This will reactivate the reCAPTCHA feature in both the cPanel and the user's panel login, providing an added layer of security.
 
-Your Windows VPN Server Management Portal is now ready for use. Access it through your web browser and enjoy streamlined server management.
+### Your Windows VPN Server Management Portal is now ready for use. Access it through your web browser and enjoy streamlined server management.
