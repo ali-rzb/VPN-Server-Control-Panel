@@ -1,0 +1,21 @@
+﻿@using Models.Users
+@using Tools
+@model User
+
+<tr class="row_with_bg table-labels-row">
+    <th>Ip</th>
+    <th>Duration</th>
+    <th></th>
+    <th></th>
+    <th></th>
+</tr>
+@foreach (var item in Model.ActiveConnections)
+{
+    <tr class="row_with_bg">
+        <th>@item.Ip</th>
+        <th>@item.ConnectionDuration.ToFriendlyString()</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+}

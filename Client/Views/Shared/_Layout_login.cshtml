@@ -1,0 +1,61 @@
+﻿@using Tools
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@ViewBag.Title</title>
+
+    <!-- Bootstrap core CSS-->
+    @Styles.Render("~/Content/vendor/bootstrap/css/bootstrap.css")
+
+    <!-- Custom fonts for this template-->
+    @Styles.Render("~/Content/vendor/fontawesome-free/css/all.css")
+
+    <!-- Custom styles for this template-->
+    @Styles.Render("~/Content/Custom/sb-admin.css")
+
+    @Styles.Render("~/Content/Custom/Fonts.css")
+</head>
+<body style="background-color:#222 !important">
+<div>
+    <div class="container">
+        <div class="card card-login mx-auto mt-5">
+            <div class="card-header">@ViewBag.Title</div>
+            <div class="card-body">
+                @RenderBody()
+                
+
+            </div>
+        </div>
+    </div>
+    <div class="container" style="display: @DialogState.Error(TempData["SuccessMessage"]?.ToString())">
+        <label class="card card-login mx-auto mt-2 bg-success">
+            <label class="card-body">
+                @(TempData["SuccessMessage"]?.ToString())
+            </label>
+        </label>
+    </div>
+    <div class="container" style="display: @DialogState.Error(TempData["ErrorMessage"]?.ToString())">
+        <label class="card card-login mx-auto mt-2 bg-danger">
+            <label class="card-body">
+                @(TempData["ErrorMessage"]?.ToString())
+            </label>
+        </label>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+@Scripts.Render("~/Content/vendor/jquery/jquery.min.js")
+@Scripts.Render("~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js")
+
+<!-- Core plugin JavaScript-->
+@Scripts.Render("~/Content/vendor/jquery-easing/jquery.easing.min.js")
+</body>
+</html>

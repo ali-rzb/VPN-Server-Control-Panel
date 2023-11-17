@@ -1,0 +1,106 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+    background-color: #777;
+    border-color: #fff
+}
+
+.page_navigator {
+    width: 100%;
+    text-align: center;
+    direction: inherit;
+}
+
+    .page_navigator a {
+        padding: 0.7%;
+        margin: 0.2%;
+        color: black;
+        font-size: 16px;
+        line-height: 16px;
+        display: inline-block;
+        border: 1px solid black;
+        background-color: #212529;
+        color: white;
+    }
+
+        .page_navigator a:hover {
+            background-color: white;
+            color: #212529;
+        }
+
+        .page_navigator a.active {
+            border: none;
+            background-color: white;
+            color: #212529;
+        }
+.connected {
+    background-color: green;
+    border-radius: 100%;
+    padding: 5px;
+    width: 0;
+}
+
+.disconnected {
+    background-color: gray;
+    border-radius: 100%;
+    padding: 5px;
+    width: 0;
+    opacity: 0.2;
+}
+
+.setting-menu-btn {
+    display: inline-block;
+}
+
+.ActionLink {
+    font-weight: 500;
+}
+
+.row_with_bg {
+    background-color: rgb(51, 51, 51, 0.1);
+}
+    .row_with_bg a {
+        font-style: italic;
+        padding-top: 0.7em;
+        display: inline-block;
+        font-weight: bold;
+    }
+.table-labels-row th {
+    font-weight: normal !important;
+    font-size: 0.85em;
+    color: rgb(100, 100, 100);
+}
+.table > tbody > tr > td, .table > tbody > tr > th {
+    padding: 8px 15px !important;
+}
+ul {
+    list-style-type: square;
+}
+.sub_title_info{
+    display: inline-block;
+    color: #999;
+}

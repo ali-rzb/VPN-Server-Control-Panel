@@ -139,8 +139,6 @@ namespace BL
             {
                 settings = new ServerSetting();
             }
-
-            var rdpService = ServiceManagement.ServiceStatus("TermService");
             settings = new ServerSetting()
             {
                 ClientsCanChangePass = settings != null ? settings.ClientsCanChangePass : false,
