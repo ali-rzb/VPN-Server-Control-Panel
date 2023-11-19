@@ -78,13 +78,15 @@ Follow these steps to set up the Windows VPN Server Management Portal on your se
 
 - Create a folder named "ServerSettings" in the root directory of drive "C."
 
-## 3. Configure App Pool Administrator
+## 3. Configure App Pool User
 
 - Open IIS Manager.
 - Navigate to Application Pools.
 - Select the pool used by your web app (found in the Advanced Settings of your application).
 - Right-click on the pool and choose Advanced Settings.
-- Edit the Identity by selecting custom and entering an administrator username and password. Click OK.
+- **Edit the Identity by selecting custom and entering an administrator username and password.**
+- **You also need to set the value of 'Load User Profile' to true**
+- Click OK.
 
 ## 4. Create User Groups
 
