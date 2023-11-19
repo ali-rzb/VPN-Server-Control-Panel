@@ -84,13 +84,13 @@ namespace CorpServer.Controllers
             try
             {
                 var timer = DateTime.Now;
-                var results = systemBl.CountConnectionsPerDay(36, 2);
+                var results = systemBl.CountConnectionsPerDay(120, 2);
                 TempData["LoadingTime"] = (DateTime.Now - timer).ToFriendlyString(shortMode: 1);
                 return View(results);
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = ex.Message;
+                TempData["ErrorMessage"] = ex.Message + ex.StackTrace;
                 return View();
             }
         }

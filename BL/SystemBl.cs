@@ -213,8 +213,16 @@ namespace BL
                 while (true)
                 {
                     int count = 0;
-                    
-                    eventInstance = reader.ReadEvent();
+
+                    try
+                    {
+                        eventInstance = reader.ReadEvent();
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                                       
                     if(eventInstance == null)
                     {
                         break;
