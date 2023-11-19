@@ -9,15 +9,20 @@ Welcome to the Windows VPN Server Management Portal, a feature-rich C# MVC proje
 ## Features
 
 1. **Multilink Capacity Control:**
-   - Set and manage limits on the number of connections each user can establish, optimizing server performance.
 
-2. **IP Reservation:**
+   The RRAS service on Windows Server lacks native options for controlling the number of simultaneous connections for VPN users. To fill this gap, our custom control panel introduces Multilink Capacity Control, enabling administrators to set and manage simultaneous connection limits for each user.
+
+   
+![Multilink](https://github.com/ali-rzb/VPN-Server-Control-Panel/assets/63366614/9238a75f-d354-4a66-aae7-b6f79e34a998)
+
+
+3. **IP Reservation:**
    - Assign unique private IP addresses to individual VPN users, enhancing network management and security.
 
-3. **User Management:**
+4. **User Management:**
    - Effortlessly edit or update VPN user profiles through an intuitive interface.
 
-4. **Activity Monitoring:**
+5. **Activity Monitoring:**
    - Observe the time and duration of connections for each VPN user, gaining insights into user activity.
 
 ![Screenshot 2023-11-15 094429](https://github.com/ali-rzb/VPN-Server-Control-Panel/assets/63366614/a86770cf-d75f-4ae9-b180-ea5499ff3162)
