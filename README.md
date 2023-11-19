@@ -41,11 +41,16 @@ Welcome to the Windows VPN Server Management Portal, a feature-rich C# MVC proje
 
 8. **Server Performance Monitoring:**
    - Real-time monitoring of CPU, Memory, and Network performance for a comprehensive view of server health.
+  
+
+![Screenshot 2023-11-19 at 10-07-14 Server Maneger - VPN Server](https://github.com/ali-rzb/VPN-Server-Control-Panel/assets/63366614/762c7eb0-34b8-4d47-96f7-dbd00ab9754c)
+
+
 
 9. **Usage Statistics:**
    - Monitor and track total hours, downloads, and uploads for each user, enabling informed decision-making and resource optimization.
   
-10. **Seperate Panel for Users:**
+11. **Seperate Panel for Users:**
       - The client panel provides users with the following capabilities:
          - View their connection history and other statistical data.
          - Modify their password and personal information.
