@@ -18,6 +18,9 @@ Welcome to the Windows VPN Server Management Portal, a feature-rich C# MVC proje
 
 3. **IP Reservation:**
    - Assign unique private IP addresses to individual VPN users, enhancing network management and security.
+  
+![Screenshot 2023-11-19 at 11-28-16 Ip Reservations - VPN Server](https://github.com/ali-rzb/VPN-Server-Control-Panel/assets/63366614/99ce32ec-79f2-4b22-b85c-3cb2a93edbc5)
+
 
 4. **User Management:**
    - Effortlessly edit or update VPN user profiles through an intuitive interface.
