@@ -135,7 +135,7 @@
                     var fileName = Path.GetFileNameWithoutExtension(file.FullName);
                     var fileExt = Path.GetExtension(file.FullName);
                     
-                    var fullUrl = Request.Url.Scheme + "://" + BL.Credentials.PublicAddress + "/Down/" + file;
+                    var fullUrl = Request.Url.Scheme + "://" + Request.Url.Host + "/Down/" + file;
                     var size = Models.Common.InfoTransferUnit.ParseBytes(file.Length).ToString();
 
                     <tr>
@@ -150,7 +150,7 @@
                             @Html.ActionLink("Remove", "Delete", "System", new { fileName = file }, new { @class = "btn btn-danger btn-xs delete-link", data_file = file })
                             @if (supported_view_formats.Contains(file.Extension.ToLower()))
                             {
-                                @Html.ActionLink("View", "FileViewer", "System", new { fileName = Tools.Encrypt.ObfuscateFileName(file.Name) }, new { @class = "btn btn-primary btn-xs", target = "_blank" })
+                                @Html.ActionLink("View", "FileViewer", "System", new { fileName = Tools.Encryption.ObfuscateFileName(file.Name) }, new { @class = "btn btn-primary btn-xs", target = "_blank" })
                             }
                         </td>
                         <td id="size_@asciiString">@size</td>
