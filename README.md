@@ -35,6 +35,10 @@ Welcome to the Windows VPN Server Management Portal, a feature-rich C# MVC proje
 
 6. **File Uploads:**
    - Conveniently upload files to the server directly through the portal for seamless data transfer.
+  
+
+![Screenshot 2023-11-19 101529](https://github.com/ali-rzb/VPN-Server-Control-Panel/assets/63366614/31d3efac-7722-41ca-b5ce-1363696981bb)
+
 
 7. **Firewall Control:**
    - Enable or disable the firewall for remote connections with ease, ensuring tailored network security.
