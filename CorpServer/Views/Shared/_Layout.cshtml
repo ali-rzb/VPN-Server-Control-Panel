@@ -18,15 +18,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("VPN Server CP", "Index", "System", new { area = "" }, new { @class = "navbar-brand" })
+                <a class="navbar-brand" area="">VPN Server CP</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Users Logs", "UsersLogs", "User")</li>
+                    <li>@Html.ActionLink("User Logs", "UsersLogs", "User")</li>
                     <li>@Html.ActionLink("New User", "NewUser", "User")</li>
-                    <li>@Html.ActionLink("Connections Stats", "ConnectionsPerDay", "System")</li>
-                    <li>@Html.ActionLink("Server Settings", "Settings", "System")</li>
-                    <li>@Html.ActionLink("Ip Reservation", "IpReservation", "User")</li>
+                    <li>@Html.ActionLink("Res Monitor", "Index", "System")</li>
+                    <li>@Html.ActionLink("Conn Stats", "ConnectionsPerDay", "System")</li>
+                    <li>@Html.ActionLink("Settings", "Settings", "System")</li>
+                    <li>@Html.ActionLink("IP Reserve", "IpReservation", "User")</li>
                     <li>@Html.ActionLink("Upload", "Upload", "System")</li>
                     <li>@Html.ActionLink("Logout", "Logout", "User")</li>
                     @*<li><a>&emsp;@DateTime.Now.ToString("H:m", System.Globalization.CultureInfo.InvariantCulture)</a></li>*@
