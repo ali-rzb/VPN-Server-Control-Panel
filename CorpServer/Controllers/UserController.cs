@@ -31,20 +31,20 @@ namespace CorpServer.Controllers
         {
             try
             {
-                //RobotValidate v = new RobotValidate("Admin CP");
-                //if (v.ValidateV2(Request.Form["g-recaptcha-response"]))
-                //{
+                RobotValidate v = new RobotValidate("Admin CP");
+                if (v.ValidateV2(Request.Form["g-recaptcha-response"]))
+                {
                     if (userBl.CheckAdminLogin(vm.AdminModel.Username, vm.AdminModel.Password))
                     {
                         FormsAuthentication.RedirectFromLoginPage(vm.AdminModel.Username.ToLower(), vm.RememberMe);
                         ModelState.Remove("Password");
                     }
-                //}
-                //else
-                //{
+                }
+                else
+                {
 
-                //    ViewBag.ErrorMessage = "Please check i'm not robot!";
-                //}
+                    ViewBag.ErrorMessage = "Please check i'm not robot!";
+                }
 
                 return View(new LoginPageVm());
             }

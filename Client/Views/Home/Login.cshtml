@@ -4,14 +4,14 @@
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout_login.cshtml";
 }
-@*<script src="https://www.google.com/recaptcha/api.js?render=your_site_key"></script>
-    <script>
-        grecaptcha.ready(function () {
-            grecaptcha.execute('your_site_key', { action: 'Login' }).then(function (token) {
-                $("#GoogleRecaptchaToken").val(token);
-            });
+<script src="https://www.google.com/recaptcha/api.js?render=6Ldx-QEkAAAAAJTKJLW52m7T0CquyCfANBu0wg6I"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('6Ldx-QEkAAAAAJTKJLW52m7T0CquyCfANBu0wg6I', { action: 'Login' }).then(function (token) {
+            $("#GoogleRecaptchaToken").val(token);
         });
-    </script>*@
+    });
+</script>
 
 
 @using (Html.BeginForm())
@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        @*@Html.HiddenFor(a => a.GoogleRecaptchaToken)*@
+        @Html.HiddenFor(a => a.GoogleRecaptchaToken)
 
         <input type="submit" value="Enter" class="btn btn-primary btn-block" />
 

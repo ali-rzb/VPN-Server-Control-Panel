@@ -31,9 +31,9 @@ namespace Client.Controllers
         {
             try
             {
-                //RobotValidate v = new RobotValidate("Client CP");
-                //if (Task.Run(() => v.ValidateV3(vm.GoogleRecaptchaToken, Request.UserHostAddress, "Login")).Result)
-                //{
+                RobotValidate v = new RobotValidate("Client CP");
+                if (Task.Run(() => v.ValidateV3(vm.GoogleRecaptchaToken, Request.UserHostAddress, "Login")).Result)
+                {
                     var validate = userBl.CheckClientLogin(vm.AdminModel.Username.ToLower(), vm.AdminModel.Password);
                     if (validate == true)
                     {
@@ -53,12 +53,12 @@ namespace Client.Controllers
                         TempData["ErrorMessage"] = "Bad Username or password!";
                         return await Task.FromResult(View(new LoginPageVm()));
                     }
-                //}
-                //else
-                //{
-                //    TempData["ErrorMessage"] = "You have suspicious activities! try again later.";
-                //    return await Task.FromResult(View(new LoginPageVm()));
-                //}
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "You have suspicious activities! try again later.";
+                    return await Task.FromResult(View(new LoginPageVm()));
+                }
             }
             catch (Exception ex)
             {

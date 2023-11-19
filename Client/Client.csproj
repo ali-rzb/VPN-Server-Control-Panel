@@ -1509,6 +1509,9 @@
     <Content Include="Content\vendor\jquery\jquery.slim.js" />
     <Content Include="Content\vendor\jquery\jquery.slim.min.js" />
     <Content Include="favicon.ico" />
+    <Content Include="Files\open-sstp-client.png" />
+    <Content Include="Files\sstp-max.png" />
+    <Content Include="Files\vpn-client-pro.png" />
     <Content Include="Files\Windows_Installation_Guid.mp4" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1600,6 +1603,8 @@
     <Content Include="Content\vendor\jquery\jquery.slim.min.map" />
     <Content Include="Files\sstp_max_build_55.apk" />
     <Content Include="Files\open_sstp_client_1.6.3.apk" />
+    <Content Include="Files\vpnclient-pro-v2.20.02.apk" />
+    <None Include="Properties\PublishProfiles\PL.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
