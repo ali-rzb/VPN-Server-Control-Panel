@@ -35,17 +35,26 @@ Welcome to the Windows VPN Server Management Portal, a feature-rich C# MVC proje
 
 6. **File Uploads:**
    - Conveniently upload files to the server directly through the portal for seamless data transfer.
+  
+
+![Screenshot 2023-11-19 101529](https://github.com/ali-rzb/VPN-Server-Control-Panel/assets/63366614/31d3efac-7722-41ca-b5ce-1363696981bb)
+
 
 7. **Firewall Control:**
    - Enable or disable the firewall for remote connections with ease, ensuring tailored network security.
 
 8. **Server Performance Monitoring:**
    - Real-time monitoring of CPU, Memory, and Network performance for a comprehensive view of server health.
+  
+
+![Screenshot 2023-11-19 at 10-07-14 Server Maneger - VPN Server](https://github.com/ali-rzb/VPN-Server-Control-Panel/assets/63366614/762c7eb0-34b8-4d47-96f7-dbd00ab9754c)
+
+
 
 9. **Usage Statistics:**
    - Monitor and track total hours, downloads, and uploads for each user, enabling informed decision-making and resource optimization.
   
-10. **Seperate Panel for Users:**
+11. **Seperate Panel for Users:**
       - The client panel provides users with the following capabilities:
          - View their connection history and other statistical data.
          - Modify their password and personal information.
@@ -69,13 +78,15 @@ Follow these steps to set up the Windows VPN Server Management Portal on your se
 
 - Create a folder named "ServerSettings" in the root directory of drive "C."
 
-## 3. Configure App Pool Administrator
+## 3. Configure App Pool User
 
 - Open IIS Manager.
 - Navigate to Application Pools.
 - Select the pool used by your web app (found in the Advanced Settings of your application).
 - Right-click on the pool and choose Advanced Settings.
-- Edit the Identity by selecting custom and entering an administrator username and password. Click OK.
+- **Edit the Identity by selecting custom and entering an administrator username and password.**
+- **You also need to set the value of 'Load User Profile' to true**
+- Click OK.
 
 ## 4. Create User Groups
 
