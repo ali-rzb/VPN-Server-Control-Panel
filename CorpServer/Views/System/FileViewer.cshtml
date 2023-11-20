@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "FileViewer";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout_public.cshtml";
     string fileName = Model.Name;
     string filePath = (Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/Uploads/" + fileName).ToLower();
     string short_name = Path.GetFileNameWithoutExtension(fileName);

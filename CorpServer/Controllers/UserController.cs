@@ -15,7 +15,7 @@ namespace CorpServer.Controllers
     public class UserController : BaseController
     {
         UserBl userBl = new UserBl();
-        SystemBl systemBl = new SystemBl();
+        
 
         #region Authentication
         [HttpGet]

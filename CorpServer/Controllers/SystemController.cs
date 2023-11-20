@@ -213,6 +213,7 @@ namespace CorpServer.Controllers
             }
         }
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult FileViewer(string fileName)
         {
             if (!string.IsNullOrEmpty(fileName))

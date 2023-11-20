@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - VPN Server</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/ConnHist.css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" area="">Haviro</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - ALI RZB</p>
+        </footer>
+    </div>
+    
+    <script>
+        $(".ShowId").click(function (e) {
+            alert($(this).attr("data"));
+        });
+        $(".AskConfirm").click(function (e) {
+            var c = confirm($(this).attr("msg"));
+            e.preventDefault();
+            if (c === true) {
+                $.ajax({
+                    url: $(this).attr("href"),
+                    success: function () {
+                        window.location = window.location;
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+                });
+            }
+        });
+        $(".RemoveBtnRedirect").click(function (e) {
+            var c = confirm($(this).attr("msg"));
+            e.preventDefault();
+            if (c === true) {
+                window.location = $(this).attr("href");   
+            }
+        });
+
+    </script>
+
+    @Scripts.Render("~/Content/vendor/chart.js/Chart.min.js")
+    @Scripts.Render("~/Content/vendor/datatables/jquery.dataTables.js")
+    @Scripts.Render("~/Content/vendor/datatables/dataTables.bootstrap4.js")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @RenderSection("EndSectionForScripts", required: false)
+</body>
+</html>
