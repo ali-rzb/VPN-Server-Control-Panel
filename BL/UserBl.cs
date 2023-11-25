@@ -629,8 +629,8 @@ namespace BL
                 instance.Total_Download = InfoTransferUnit.ParseBytes(total_download);
                 instance.Total_Duration = total_duration.ToFriendlyString(shortMode: 1);
                 instance.Connections_Count = connections.Count();
-                instance.Status = active_connections.Count() != 0;
-                if (instance.Status)
+                instance.Active_Connections = active_connections.Count();
+                if (instance.Active_Connections != 0)
                 {
                     instance.Active_Duration = new TimeSpan((from conn in active_connections select conn.ConnectionDuration.Ticks).Max()).ToFriendlyString(shortMode: 1);
                 }

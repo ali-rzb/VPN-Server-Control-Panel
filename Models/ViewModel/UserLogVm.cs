@@ -21,7 +21,7 @@ namespace Models.ViewModel
         public InfoTransferUnit Total_Upload { get; set; }
         public string Total_Duration { get; set; }
         public int Connections_Count { get; set; }
-        public bool Status { get; set; }
+        public int Active_Connections { get; set; }
         public string Active_Duration { get; set; }
         public DateTime FirstLog { get; set; }
 

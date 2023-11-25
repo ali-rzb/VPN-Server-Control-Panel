@@ -3,7 +3,6 @@ using Models;
 using Models.Common;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -14,7 +13,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using Tools;
-using static System.Net.WebRequestMethods;
 
 namespace CorpServer.Controllers
 {

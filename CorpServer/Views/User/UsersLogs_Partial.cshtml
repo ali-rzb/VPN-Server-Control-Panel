@@ -84,9 +84,13 @@
                         {
                             <img src="~/Content/no-key.png" style="width: 10px;" />
                         }
+                        @if (item.Active_Connections > 1)
+                        {
+                            <span class="conn_count_class">(@item.Active_Connections)</span>
+                        }
                     </th>
                     <th>
-                        @if (item.Status)
+                        @if (item.Active_Connections != 0)
                         {
                             onlines_count += 1;
                             <div class="connected"></div>
