@@ -86,6 +86,10 @@ textarea {
     display: inline-block;
 }
 
+.conn_count_class {
+    margin-left: 5px;
+}
+
 .setting-menu-btn {
     display: inline-block;
 }
@@ -140,6 +144,7 @@ textarea {
 .download-link img {
     height: 100%;
 }
+
 
 
 
